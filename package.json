@@ -1,0 +1,20 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify -v -g [ babelify --presets [ \"@babel/preset-env\" ] ]  index.js -g [ envify --NODE_ENV development ] -o ./index.min.js"
+  },
+  "author": "richorama",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babelify": "^9.0.0",
+    "browserify": "^16.2.3",
+    "envify": "^4.1.0",
+    "eventthing": "^1.0.7",
+    "watchify": "^3.11.1"
+  }
+}
