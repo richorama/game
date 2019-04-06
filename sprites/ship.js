@@ -15,14 +15,12 @@ module.exports = props => {
   const calculatePosition = dt => {
     let newX = x
     let newY = y
-    if (keys.ArrowLeft && !keys.ArrowRight) newX = x - maxSpeed / dt
-    if (keys.ArrowRight && !keys.ArrowLeft) newX = x + maxSpeed / dt
-    if (keys.ArrowUp && !keys.ArrowDown) newY = y - maxSpeed / dt
-    if (keys.ArrowDown && !keys.ArrowUp) newY = y + maxSpeed / dt
-    if (newX < 0 || newX + width > window.innerWidth) return
-    if (newY < 0 || newY + height > window.innerHeight) return
-    x = newX
-    y = newY
+    if (keys.ArrowLeft && !keys.ArrowRight) newX -= maxSpeed / dt
+    if (keys.ArrowRight && !keys.ArrowLeft) newX += maxSpeed / dt
+    if (keys.ArrowUp && !keys.ArrowDown) newY -= maxSpeed / dt
+    if (keys.ArrowDown && !keys.ArrowUp) newY += maxSpeed / dt
+    if (newX > 0 && newX + width <= window.innerWidth) x = newX
+    if (newY > 0 && newY + height <= window.innerHeight) y = newY
   }
 
   return {
