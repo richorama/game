@@ -20,6 +20,7 @@ module.exports = callback => {
   }
   resizeCanvas();
 
+  /*
   let frameCount = 0;
   let fps = 0;
   setInterval(() => {
@@ -27,17 +28,18 @@ module.exports = callback => {
     fps = frameCount;
     frameCount = 0;
   }, 1000)
+  */
 
   window.requestAnimationFrame(drawFrame);
   function drawFrame() {
-    frameCount++;
+    // frameCount++;
 
     bufferContext.fillStyle = 'rgb(0, 0, 0)';
     bufferContext.fillRect(0, 0, viewportCanvas.width, viewportCanvas.height);
 
     const now = new Date().getTime()
     callback({
-      canvas: bufferContext,
+      buffer: bufferContext,
       gameTime: now - gameStart,
       timeSinceLastFrame: now - lastFrame
     });
