@@ -9,10 +9,11 @@ const subscribedKeys = new Set([
   'ArrowDown',
   'ArrowLeft',
   'ArrowRight',
+  'ControlLeft'
 ])
 
 document.addEventListener('keydown', evt => {
-  if (!subscribedKeys.has(evt.code)) return
+  if (!subscribedKeys.has(evt.code)) return console.log(`unknown key ${evt.code}`)
   evt.preventDefault()
   if (keyStates[evt.code]) return
   keyStates[evt.code] = true

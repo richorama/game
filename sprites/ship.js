@@ -24,6 +24,7 @@ module.exports = props => {
   }
 
   return {
+    getPosition: () => [x,y],
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = '#cccccc'

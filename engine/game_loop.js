@@ -34,7 +34,7 @@ module.exports = callback => {
   function drawFrame() {
     // frameCount++;
 
-    bufferContext.fillStyle = 'rgb(0, 0, 0)';
+    bufferContext.fillStyle = 'rgb(40, 44, 52)';
     bufferContext.fillRect(0, 0, viewportCanvas.width, viewportCanvas.height);
 
     const now = new Date().getTime()
