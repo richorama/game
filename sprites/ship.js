@@ -1,16 +1,11 @@
 const et = require('eventthing')
-const keyboard = require('../engine/keyboard')
 const width = 25
 const height = 25
 
 module.exports = props => {
   let { x, y, maxSpeed } = props
   let keys = {}
-  const getKeyboardState = () => {
-    keys = keyboard.keyStates()
-  }
-  et.on('keydown', getKeyboardState)
-  et.on('keyup', getKeyboardState)
+  et.on('keychange', newKeys => keys = newKeys)
 
   const calculatePosition = dt => {
     let newX = x
@@ -24,7 +19,8 @@ module.exports = props => {
   }
 
   return {
-    getPosition: () => [x,y],
+    getPosition: () => [x + width / 2, y + height / 2],
+    getDimensions: () => [width, height],
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = '#cccccc'

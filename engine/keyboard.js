@@ -18,6 +18,7 @@ document.addEventListener('keydown', evt => {
   if (keyStates[evt.code]) return
   keyStates[evt.code] = true
   et.fire('keydown', evt.code)
+  et.fire('keychange', keyStates)
 })
 
 document.addEventListener('keyup', evt => {
@@ -25,4 +26,5 @@ document.addEventListener('keyup', evt => {
   evt.preventDefault()
   keyStates[evt.code] = false
   et.fire('keyup', evt.code)
+  et.fire('keychange', keyStates)
 })

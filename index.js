@@ -5,9 +5,10 @@ const layers = require('./engine/layers')
 const Layer = require('./engine/layer')
 const Ship = require('./sprites/ship')
 const Star = require('./sprites/star')
-const et = require('eventthing')
+// const et = require('eventthing')
 const weaponSystem = require('./engine/weapon_system')
 const SimpleGun = require('./weapons/simple_gun')
+const Level1Enemy = require('./sprites/level1_enemy')
 
 const starLayer = layers
   .add(Layer({}))
@@ -29,19 +30,32 @@ const ship = Ship({
   maxSpeed: 200
 })
 
-weaponSystem.add(SimpleGun({ rate: 200, velocity: [0, -300], offset: [12.5, 0] }))
+weaponSystem.add(SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5] }))
 
 layers
   .add(Layer({}))
   .addSprite(ship)
 
+const ballisticsLayer = Layer({})
+layers.add(ballisticsLayer)
+
 const weaponsLayer = Layer({})
 layers.add(weaponsLayer)
 
+const enemyLayer = Layer({})
+layers.add(enemyLayer)
+
+enemyLayer.addSprite(Level1Enemy({
+  position: [100, 100],
+  speed: 30,
+  radius: 20,
+  colour: 'rgb(224, 108, 117)'
+}))
+
 GameLoop(ctx => {
   ctx.ship = ship
-  weaponSystem.fire(ctx, weaponsLayer)
+  weaponSystem.fire(ctx, ballisticsLayer)
   compositor.compose(ctx, layers.all())
 })
 
-et.on('*', (value, name) => console.log(`eventthing fired ${name} => ${value}`))
+// et.on('*', (value, name) => console.log(`eventthing fired ${name} => ${value}`))

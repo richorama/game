@@ -1,13 +1,8 @@
 const et = require('eventthing')
-const keyboard = require('./keyboard')
 let weapons = []
 
 let keys = {}
-const getKeyboardState = () => {
-  keys = keyboard.keyStates()
-}
-et.on('keydown', getKeyboardState)
-et.on('keyup', getKeyboardState)
+et.on('keychange', newKeys => keys = newKeys)
 
 module.exports.fire = (ctx, layer) => {
   if (!keys.ControlLeft) return
