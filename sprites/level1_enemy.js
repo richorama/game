@@ -6,14 +6,15 @@ module.exports = props => {
 
   const calculatePosition = ctx => {
     const target = ctx.ship.getPosition()
-    const dx = target[0] - x
-    const dy = target[1] - y
-    const heading = Math.atan2(dy, dx)
+    const heading = Math.atan2(target[1] - y, target[0] - x)
     x += speed * Math.cos(heading) / ctx.timeSinceLastFrame
     y += speed * Math.sin(heading) / ctx.timeSinceLastFrame
   }
 
   return {
+    fire: ctx => {
+      
+    },
     render: ctx => {
       calculatePosition(ctx)
       ctx.buffer.fillStyle = colour

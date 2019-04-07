@@ -11,7 +11,8 @@ const SimpleGun = require('./weapons/simple_gun')
 const Level1Enemy = require('./sprites/level1_enemy')
 
 const starLayer = layers
-  .add(Layer({}))
+  .add(Layer({
+  }))
 
 for (var i = 0; i < 100; i++) {
   const z = Math.random() + 0.5
