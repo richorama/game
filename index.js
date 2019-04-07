@@ -19,7 +19,7 @@ for (var i = 0; i < 100; i++) {
   starLayer.addSprite(Star({
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
-    speed: z * 10,
+    speed: z * 50,
     colour: `rgb(${86 * z / 2}, ${182 * z / 2}, ${194 * z / 2})`,
     radius: z * 2
   }))

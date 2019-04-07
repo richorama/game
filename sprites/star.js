@@ -5,8 +5,8 @@ module.exports = props => {
 
   const calculatePosition = dt => {
     y += speed / dt
-    if (y + radius > window.innerHeight) {
-      y = 0
+    if (y - (radius * 2) > window.innerHeight) {
+      y = radius * -2
       x = Math.random() * window.innerWidth
     }
   }
