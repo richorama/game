@@ -7,7 +7,7 @@ et.on('keychange', newKeys => keys = newKeys)
 module.exports.fire = (ctx, layer) => {
   if (!keys.ControlLeft) return
   weapons.forEach(weapon => {
-    (weapon.fire(ctx) || []).forEach(newSprite => layer.addSprite(newSprite)) 
+    (weapon.fire(ctx) || []).forEach(newSprite => layer.addSprite(newSprite))
   })
 }
 

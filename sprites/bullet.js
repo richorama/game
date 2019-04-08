@@ -1,12 +1,11 @@
 const twopi = 2 * Math.PI
 
 module.exports = props => {
-  let { position, velocity, radius, colour } = props
+  let { position, velocity, radius, colour, damage } = props
   let [x, y] = position
   const [dx, dy] = velocity
 
   const calculatePosition = dt => {
-
     x += velocity[0] / dt
     y += velocity[1] / dt
 
@@ -17,12 +16,21 @@ module.exports = props => {
   }
 
   const instance = {
+    hit: sprite => instance.removeFromLayer(),
+    getDamage: () => damage,
+    getExtent: () => {
+      return {
+        x,
+        y,
+        radius
+      }
+    },
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = colour
-      ctx.buffer.beginPath();
-      ctx.buffer.arc(x, y, radius, 0, twopi);
-      ctx.buffer.fill();
+      ctx.buffer.beginPath()
+      ctx.buffer.arc(x, y, radius, 0, twopi)
+      ctx.buffer.fill()
     }
   }
   return instance

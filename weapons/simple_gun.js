@@ -1,7 +1,7 @@
 const Bullet = require('../sprites/bullet')
 
 module.exports = props => {
-  const { rate, velocity, offset } = props
+  const { rate, velocity, offset, damage} = props
   const [dx, dy] = offset
 
   let lastFired = 0
@@ -15,7 +15,8 @@ module.exports = props => {
           position: [x + dx, y + dy],
           velocity: velocity,
           radius: 5,
-          colour: '#fff'
+          colour: '#fff',
+          damage
         })]
       }
     }

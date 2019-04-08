@@ -3,9 +3,10 @@ const width = 25
 const height = 25
 
 module.exports = props => {
-  let { x, y, maxSpeed } = props
+  let { x, y, maxSpeed, energy } = props
+  let damageInflicted = false
   let keys = {}
-  et.on('keychange', newKeys => keys = newKeys)
+  et.on('keychange', newKeys => (keys = newKeys))
 
   const calculatePosition = dt => {
     let newX = x
@@ -19,13 +20,25 @@ module.exports = props => {
   }
 
   return {
+    hit: sprite => {
+      energy -= sprite.getDamage()
+      if (energy <= 0) instance.removeFromLayer()
+      damageInflicted = true
+    },
+    getDamage: () => 100000,
+    getExtent: () => {
+      return {
+        x,
+        y,
+        radius: 12.5
+      }
+    },
     getPosition: () => [x + width / 2, y + height / 2],
     getDimensions: () => [width, height],
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
-      ctx.buffer.fillStyle = '#cccccc'
+      ctx.buffer.fillStyle = damageInflicted ? 'white' : '#cccccc'
       ctx.buffer.fillRect(x, y, width, height)
     }
   }
-
 }

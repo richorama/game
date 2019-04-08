@@ -12,6 +12,12 @@ module.exports = config => {
       if (config.preRender) config.preRender(ctx)
       sprites.forEach(sprite => sprite.render(ctx))
       if (config.postRender) config.postRender(ctx)
+    },
+    fire: (ctx, layer) => {
+      sprites.forEach(sprite => {
+        (sprite.fire(ctx) || []).forEach(newSprite => layer.addSprite(newSprite))
+      })
     }
+
   }
 }
