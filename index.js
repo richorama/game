@@ -6,11 +6,11 @@ const Layer = require('./engine/layer')
 const Ship = require('./sprites/ship')
 const Star = require('./sprites/star')
 const SimpleGun = require('./sprites/simple_gun')
-const Level1Enemy = require('./sprites/level1_enemy')
 const hitDetection = require('./engine/hit_detection')
 const et = require('eventthing')
 const Explosion = require('./sprites/explosion')
-
+const storyboard = require('./engine/storyboard')
+const level1 = require('./levels/level1')
 const starLayer = layers.add(Layer({}))
 
 for (var i = 0; i < 100; i++) {
@@ -51,27 +51,7 @@ layers.add(weaponsLayer)
 const enemyLayer = Layer({})
 layers.add(enemyLayer)
 
-enemyLayer.addSprite(
-  Level1Enemy({
-    position: [0, 0],
-    speed: 30,
-    radius: 20,
-    colour: 'rgb(224, 108, 117)',
-    energy: 30,
-    rate: 2000
-  })
-)
-
-enemyLayer.addSprite(
-  Level1Enemy({
-    position: [window.innerWidth, 0],
-    speed: 30,
-    radius: 20,
-    colour: 'rgb(224, 108, 117)',
-    energy: 30,
-    rate: 2000
-  })
-)
+et.on('createenemy', enemyLayer.addSprite)
 
 const effectsLayer = Layer({})
 layers.add(effectsLayer)
@@ -80,6 +60,7 @@ et.on('explosion', props => {
   effectsLayer.addSprite(new Explosion(props))
 })
 
+storyboard.play(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
