@@ -5,7 +5,6 @@ const layers = require('./engine/layers')
 const Layer = require('./engine/layer')
 const Ship = require('./sprites/ship')
 const Star = require('./sprites/star')
-// const et = require('eventthing')
 const weaponSystem = require('./engine/weapon_system')
 const SimpleGun = require('./weapons/simple_gun')
 const Level1Enemy = require('./sprites/level1_enemy')
@@ -27,8 +26,8 @@ for (var i = 0; i < 100; i++) {
 }
 
 const ship = Ship({
-  x: window.innerWidth / 2,
-  y: window.innerHeight / 1.5,
+  x: window.innerWidth * 0.5,
+  y: window.innerHeight * 0.7,
   maxSpeed: 200,
   energy: 1000
 })
@@ -54,7 +53,18 @@ layers.add(enemyLayer)
 
 enemyLayer.addSprite(
   Level1Enemy({
-    position: [100, 100],
+    position: [0, 0],
+    speed: 30,
+    radius: 20,
+    colour: 'rgb(224, 108, 117)',
+    energy: 30,
+    rate: 2000
+  })
+)
+
+enemyLayer.addSprite(
+  Level1Enemy({
+    position: [window.innerWidth, 0],
     speed: 30,
     radius: 20,
     colour: 'rgb(224, 108, 117)',
