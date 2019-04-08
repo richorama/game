@@ -1,14 +1,15 @@
-require('./engine/keyboard')
-const GameLoop = require('./engine/game_loop')
+const keyboard = require('./engine/keyboard')
+const gameLoop = require('./engine/game_loop')
 const compositor = require('./engine/compositor')
 const layers = require('./engine/layers')
 const Layer = require('./engine/layer')
 const Ship = require('./sprites/ship')
 const Star = require('./sprites/star')
-const weaponSystem = require('./engine/weapon_system')
-const SimpleGun = require('./weapons/simple_gun')
+const SimpleGun = require('./sprites/simple_gun')
 const Level1Enemy = require('./sprites/level1_enemy')
 const hitDetection = require('./engine/hit_detection')
+const et = require('eventthing')
+const Explosion = require('./sprites/explosion')
 
 const starLayer = layers.add(Layer({}))
 
@@ -35,9 +36,7 @@ const shipLayer = Layer({})
 shipLayer.addSprite(ship)
 layers.add(shipLayer)
 
-weaponSystem.add(
-  SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5], damage: 10 })
-)
+
 
 const ballisticsLayer = Layer({})
 layers.add(ballisticsLayer)
@@ -46,6 +45,7 @@ const enemyBallisticsLayer = Layer({})
 layers.add(enemyBallisticsLayer)
 
 const weaponsLayer = Layer({})
+weaponsLayer.addSprite(SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5], damage: 10 }))
 layers.add(weaponsLayer)
 
 const enemyLayer = Layer({})
@@ -73,18 +73,24 @@ enemyLayer.addSprite(
   })
 )
 
-GameLoop(ctx => {
+const effectsLayer = Layer({})
+layers.add(effectsLayer)
+
+et.on('explosion', props => {
+  effectsLayer.addSprite(new Explosion(props))
+})
+
+
+gameLoop(ctx => {
   ctx.ship = ship
 
-  hitDetection.detect(ballisticsLayer, enemyLayer)
-  hitDetection.detect(shipLayer, enemyLayer)
-  hitDetection.detect(shipLayer, enemyBallisticsLayer)
-  weaponSystem.fire(ctx, ballisticsLayer)
+  hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
+  hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
+  hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
+  if (keyboard.keyStates().ControlLeft) weaponsLayer.fire(ctx, ballisticsLayer)
   enemyLayer.fire(ctx, enemyBallisticsLayer)
   compositor.compose(
     ctx,
     layers.all()
   )
 })
-
-// et.on('*', (value, name) => console.log(`eventthing fired ${name} => ${value}`))

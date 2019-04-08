@@ -6,8 +6,6 @@ module.exports = callback => {
 
   const bufferCanvas = document.createElement('canvas');
   const bufferContext = bufferCanvas.getContext('2d', { alpha: false });
-  let horizonX = 0;
-  let horizonY = 0;
   // resize the canvas to fill browser window dynamically
   window.addEventListener('resize', resizeCanvas, false);
   function resizeCanvas() {
@@ -15,8 +13,6 @@ module.exports = callback => {
     viewportCanvas.height = window.innerHeight;
     bufferCanvas.width = window.innerWidth;
     bufferCanvas.height = window.innerHeight;
-    horizonX = window.innerWidth / 2;
-    horizonY = window.innerHeight / 2;
   }
   resizeCanvas();
 

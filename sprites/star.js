@@ -12,12 +12,6 @@ module.exports = props => {
   }
 
   return {
-    getExtent: () => {
-      throw new Error('not implemented')
-    },
-    hit: () => {
-      throw new Error('not implemented')
-    },
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = colour
