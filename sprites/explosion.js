@@ -20,6 +20,7 @@ module.exports = props => {
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.strokeStyle = '#fff'
+      // ctx.buffer.lineWidth = 50 / (life + 1)
       ctx.buffer.beginPath()
       ctx.buffer.arc(x, y, life / 5, 0, twopi)
       ctx.buffer.stroke()

@@ -8,23 +8,28 @@ module.exports = props => {
   let [x, y] = position
   let damageInflicted = false
   let lastFired = 0
-  let lastHeading = [0, 0]
+  let lastShipPosition = [x,y]
   const calculatePosition = ctx => {
+    lastShipPosition = ctx.ship.getPosition()
     const newHeading = maths.calculateTrajectory(
       [x, y],
-      ctx.ship.getPosition(),
+      lastShipPosition,
       speed / ctx.timeSinceLastFrame
     )
     x += newHeading[0]
     y += newHeading[1]
-    lastHeading = newHeading
   }
 
   const instance = {
     hit: sprite => {
       energy -= sprite.getDamage()
       if (energy <= 0) {
-        et.fire('explosion', { position: [x, y], velocity: lastHeading })
+        const explosionHeading = maths.calculateTrajectory(
+          [x, y],
+          lastShipPosition,
+          speed
+        )
+        et.fire('explosion', { position: [x, y], velocity: explosionHeading })
         instance.removeFromLayer()
       }
       damageInflicted = true
