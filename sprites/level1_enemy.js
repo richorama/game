@@ -1,11 +1,7 @@
 const Bullet = require('./bullet')
 const twopi = 2 * Math.PI
 const et = require('eventthing')
-
-function calculateTrajectory(source, target, speed) {
-  const heading = Math.atan2(target[1] - source[1], target[0] - source[0])
-  return [speed * Math.cos(heading), speed * Math.sin(heading)]
-}
+const maths = require('../engine/maths')
 
 module.exports = props => {
   let { position, speed, radius, colour, energy, rate } = props
@@ -14,7 +10,7 @@ module.exports = props => {
   let lastFired = 0
   let lastHeading = [0, 0]
   const calculatePosition = ctx => {
-    const newHeading = calculateTrajectory(
+    const newHeading = maths.calculateTrajectory(
       [x, y],
       ctx.ship.getPosition(),
       speed / ctx.timeSinceLastFrame
@@ -49,7 +45,7 @@ module.exports = props => {
         return [
           Bullet({
             position: [x, y],
-            velocity: calculateTrajectory([x, y], shipPosition, 200),
+            velocity: maths.calculateTrajectory([x, y], shipPosition, 200),
             radius: 5,
             colour: '#fff'
           })

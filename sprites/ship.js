@@ -7,6 +7,9 @@ module.exports = props => {
   let damageInflicted = false
   let keys = {}
   et.on('keychange', newKeys => (keys = newKeys))
+  et.on('upgrade', upgrade => {
+    if (upgrade.speedup) maxSpeed += upgrade.speedup
+  })
 
   const calculatePosition = dt => {
     let newX = x
@@ -15,8 +18,8 @@ module.exports = props => {
     if (keys.ArrowRight && !keys.ArrowLeft) newX += maxSpeed / dt
     if (keys.ArrowUp && !keys.ArrowDown) newY -= maxSpeed / dt
     if (keys.ArrowDown && !keys.ArrowUp) newY += maxSpeed / dt
-    if (newX > 0 && newX + width <= window.innerWidth) x = newX
-    if (newY > 0 && newY + height <= window.innerHeight) y = newY
+    if (newX > width / 2 && newX + width / 2 <= window.innerWidth) x = newX
+    if (newY > height / 2 && newY + height / 2 <= window.innerHeight) y = newY
   }
 
   return {
@@ -33,12 +36,13 @@ module.exports = props => {
         radius: 12.5
       }
     },
-    getPosition: () => [x + width / 2, y + height / 2],
+    getPosition: () => [x, y],
     getDimensions: () => [width, height],
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
-      ctx.buffer.fillStyle = damageInflicted ? 'white' : '#cccccc'
-      ctx.buffer.fillRect(x, y, width, height)
+      ctx.buffer.fillStyle = damageInflicted ? 'white' : 'rgb(152, 195, 121)'
+      ctx.buffer.fillRect(x - width / 2, y - width / 2, width, height)
+      damageInflicted = false
     }
   }
 }

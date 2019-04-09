@@ -11,7 +11,9 @@ const et = require('eventthing')
 const Explosion = require('./sprites/explosion')
 const storyboard = require('./engine/storyboard')
 const level1 = require('./levels/level1')
+const Upgrade = require('./sprites/upgrade')
 const starLayer = layers.add(Layer({}))
+
 
 for (var i = 0; i < 100; i++) {
   const z = Math.random() + 0.5
@@ -29,7 +31,7 @@ for (var i = 0; i < 100; i++) {
 const ship = Ship({
   x: window.innerWidth * 0.5,
   y: window.innerHeight * 0.7,
-  maxSpeed: 200,
+  maxSpeed: 100,
   energy: 1000
 })
 const shipLayer = Layer({})
@@ -42,6 +44,7 @@ const ballisticsLayer = Layer({})
 layers.add(ballisticsLayer)
 
 const enemyBallisticsLayer = Layer({})
+et.on('createupgrade', props => enemyBallisticsLayer.addSprite(new Upgrade(props)))
 layers.add(enemyBallisticsLayer)
 
 const weaponsLayer = Layer({})
