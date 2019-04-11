@@ -18,8 +18,7 @@ module.exports = props => {
 
   const instance = {
     hit: sprite => {
-      et.fire('upgrade', upgrade),
-      instance.removeFromLayer()
+      et.fire('upgrade', upgrade), instance.removeFromLayer()
     },
     getDamage: () => 0,
     getExtent: () => {
@@ -31,10 +30,14 @@ module.exports = props => {
     },
     render: ctx => {
       calculatePosition(ctx)
-      ctx.buffer.strokeStyle = colour
+      const value = Math.round((255 * Math.sin(ctx.gameTime / 100)) / 2 + 1)
+      ctx.buffer.fillStyle = colour
+      ctx.buffer.strokeStyle = `rgb(${value}, ${value}, ${value})`
+      ctx.buffer.lineWidth = 3
       ctx.buffer.beginPath()
       ctx.buffer.arc(x, y, radius, 0, twopi)
       ctx.buffer.stroke()
+      ctx.buffer.fill()
     }
   }
   return instance

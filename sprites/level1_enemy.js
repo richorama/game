@@ -8,7 +8,7 @@ module.exports = props => {
   let [x, y] = position
   let damageInflicted = false
   let lastFired = 0
-  let lastShipPosition = [x,y]
+  let lastShipPosition = [x, y]
   const calculatePosition = ctx => {
     lastShipPosition = ctx.ship.getPosition()
     const newHeading = maths.calculateTrajectory(
@@ -29,7 +29,7 @@ module.exports = props => {
           lastShipPosition,
           speed
         )
-        et.fire('explosion', { position: [x, y], velocity: explosionHeading })
+        et.fire('explosion', { position: [x, y], velocity: explosionHeading, colour })
         instance.removeFromLayer()
       }
       damageInflicted = true

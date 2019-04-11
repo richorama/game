@@ -1,10 +1,46 @@
 const twopi = 2 * Math.PI
+const Star = require('./star')
+
+const Spec = props => {
+  let { position, velocity, colour } = props
+
+  const calculatePosition = dt => {
+    position[0] += velocity[0] / dt
+    position[1] += velocity[1] / dt
+  }
+
+  return {
+    render: ctx => {
+      calculatePosition(ctx.timeSinceLastFrame)
+      ctx.buffer.fillStyle = colour
+      ctx.buffer.beginPath()
+      ctx.buffer.arc(position[0], position[1], 2, 0, twopi)
+      ctx.buffer.fill()
+    }
+  }
+}
 
 module.exports = props => {
-  let { position, velocity } = props
+  let { position, velocity, colour } = props
   let [x, y] = position
   const [dx, dy] = velocity
   let life = 0
+  const childSprites = []
+  const specSpeed = 50
+  const specCount = 20
+
+  for (var i = 0; i < specCount; i++) {
+    childSprites.push(
+      Spec({
+        colour,
+        position: [x, y],
+        velocity: [
+          velocity[0] + specSpeed * (Math.random() - 0.5),
+          velocity[1] + specSpeed * (Math.random() - 0.5)
+        ]
+      })
+    )
+  }
 
   const calculatePosition = dt => {
     x += velocity[0] / dt
@@ -19,17 +55,17 @@ module.exports = props => {
   const instance = {
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
-      ctx.buffer.strokeStyle = '#fff'
-      // ctx.buffer.lineWidth = 50 / (life + 1)
+      const value = 1 - life / 500
+      ctx.buffer.strokeStyle = '#ffffff'
+      ctx.buffer.lineWidth = 2
       ctx.buffer.beginPath()
       ctx.buffer.arc(x, y, life / 5, 0, twopi)
       ctx.buffer.stroke()
 
-      life += ctx.timeSinceLastFrame
+      childSprites.forEach(x => x.render(ctx))
 
-      if (life > 500){
-        instance.removeFromLayer()
-      }
+      life += ctx.timeSinceLastFrame
+      if (life > 500) instance.removeFromLayer()
     }
   }
   return instance
