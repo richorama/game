@@ -1,5 +1,4 @@
 const twopi = 2 * Math.PI
-const Star = require('./star')
 
 const Spec = props => {
   let { position, velocity, colour } = props
@@ -10,11 +9,11 @@ const Spec = props => {
   }
 
   return {
-    render: ctx => {
+    render: (ctx, life) => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = colour
       ctx.buffer.beginPath()
-      ctx.buffer.arc(position[0], position[1], 2, 0, twopi)
+      ctx.buffer.arc(position[0], position[1], (500- life) /40, 0, twopi)
       ctx.buffer.fill()
     }
   }
@@ -62,7 +61,7 @@ module.exports = props => {
       ctx.buffer.arc(x, y, life / 5, 0, twopi)
       ctx.buffer.stroke()
 
-      childSprites.forEach(x => x.render(ctx))
+      childSprites.forEach(x => x.render(ctx, life))
 
       life += ctx.timeSinceLastFrame
       if (life > 500) instance.removeFromLayer()

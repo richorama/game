@@ -5,6 +5,7 @@ const maths = require('../engine/maths')
 module.exports = props => {
   let { position, speed, radius, colour, upgrade } = props
   let [x, y] = position
+  let life = 0
 
   const calculatePosition = ctx => {
     const newHeading = maths.calculateTrajectory(
@@ -30,14 +31,22 @@ module.exports = props => {
     },
     render: ctx => {
       calculatePosition(ctx)
-      const value = Math.round((255 * Math.sin(ctx.gameTime / 100)) / 2 + 1)
+
+      ctx.buffer.strokeStyle = '#fff'
+      ctx.buffer.lineWidth = 1
+      ctx.buffer.beginPath()
+      ctx.buffer.arc(x, y, (life % 500) / 20  , 0, twopi)
+      ctx.buffer.stroke()
+
       ctx.buffer.fillStyle = colour
-      ctx.buffer.strokeStyle = `rgb(${value}, ${value}, ${value})`
-      ctx.buffer.lineWidth = 3
+      //ctx.buffer.strokeStyle = `rgb(${value}, ${value}, ${value})`
+      ctx.buffer.lineWidth = 1
       ctx.buffer.beginPath()
       ctx.buffer.arc(x, y, radius, 0, twopi)
       ctx.buffer.stroke()
       ctx.buffer.fill()
+
+      life += ctx.timeSinceLastFrame
     }
   }
   return instance
