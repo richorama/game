@@ -29,7 +29,7 @@ module.exports = callback => {
   window.requestAnimationFrame(drawFrame);
   function drawFrame() {
     // frameCount++;
-
+    bufferContext.font = '20px Orbitron'
     bufferContext.fillStyle = 'rgb(40, 44, 52)';
     bufferContext.fillRect(0, 0, viewportCanvas.width, viewportCanvas.height);
 

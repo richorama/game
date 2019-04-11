@@ -9,7 +9,8 @@ const subscribedKeys = new Set([
   'ArrowDown',
   'ArrowLeft',
   'ArrowRight',
-  'ControlLeft'
+  'ControlLeft',
+  'Space'
 ])
 
 document.addEventListener('keydown', evt => {

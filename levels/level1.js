@@ -35,7 +35,7 @@ module.exports = add => {
   })
 
   // speedup
-  add(100, () => createUpgrade({ speedup: 100 }))
+  add(100, () => createUpgrade({ speedup: 100, text: '+ SPEED UP' }))
 
   // enemies behind
   add(5000, () => {
@@ -46,6 +46,7 @@ module.exports = add => {
   // rear facing gun
   add(100, () =>
     createUpgrade({
+      text: '+ REAR SHOT',
       weapon: SimpleGun({
         rate: 200,
         velocity: [0, 300],
@@ -62,5 +63,4 @@ module.exports = add => {
     createBasicEnemy([0, window.innerHeight])
     createBasicEnemy([window.innerWidth, window.innerHeight])
   })
-
 }

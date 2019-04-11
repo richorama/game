@@ -12,8 +12,9 @@ const Explosion = require('./sprites/explosion')
 const storyboard = require('./engine/storyboard')
 const level1 = require('./levels/level1')
 const Upgrade = require('./sprites/upgrade')
-const starLayer = layers.add(Layer({}))
+const Text = require('./sprites/text')
 
+const starLayer = layers.add(Layer({}))
 
 for (var i = 0; i < 100; i++) {
   const z = Math.random() + 0.5
@@ -42,15 +43,19 @@ const ballisticsLayer = Layer({})
 layers.add(ballisticsLayer)
 
 const enemyBallisticsLayer = Layer({})
-et.on('create_upgrade', props => enemyBallisticsLayer.addSprite(new Upgrade(props)))
+et.on('create_upgrade', props =>
+  enemyBallisticsLayer.addSprite(new Upgrade(props))
+)
 layers.add(enemyBallisticsLayer)
 
 const weaponsLayer = Layer({})
-weaponsLayer.addSprite(SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5], damage: 10 }))
+weaponsLayer.addSprite(
+  SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5], damage: 10 })
+)
 layers.add(weaponsLayer)
 
 et.on('upgrade', upgrade => {
-  if (upgrade.weapon){
+  if (upgrade.weapon) {
     weaponsLayer.addSprite(upgrade.weapon)
   }
 })
@@ -67,15 +72,19 @@ et.on('explosion', props => {
   effectsLayer.addSprite(new Explosion(props))
 })
 
+et.on('display_text', props => {
+  effectsLayer.addSprite(new Text(props))
+})
+
 storyboard.play(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
 
-  hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
-  hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
-  hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
-  if (keyboard.keyStates().ControlLeft) weaponsLayer.fire(ctx, ballisticsLayer)
+  hitDetection.detect(ballisticsLayer, enemyLayer)      // when bullets hit an enemy
+  hitDetection.detect(shipLayer, enemyLayer)            // when the ship hits an enemy
+  hitDetection.detect(shipLayer, enemyBallisticsLayer)  // when enemy bullets hit the ship
+  if (keyboard.keyStates().Space) weaponsLayer.fire(ctx, ballisticsLayer)
   enemyLayer.fire(ctx, enemyBallisticsLayer)
   compositor.compose(
     ctx,

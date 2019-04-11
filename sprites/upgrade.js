@@ -20,6 +20,7 @@ module.exports = props => {
   const instance = {
     hit: sprite => {
       et.fire('upgrade', upgrade), instance.removeFromLayer()
+      et.fire('display_text', { position: [x + 15, y + 15], colour, text: upgrade.text, velocity: [0,-10] })
     },
     getDamage: () => 0,
     getExtent: () => {
@@ -32,7 +33,7 @@ module.exports = props => {
     render: ctx => {
       calculatePosition(ctx)
 
-      if (Math.floor((life / 500)) % 5 === 0) {
+      if (Math.floor(life / 500) % 5 === 0) {
         ctx.buffer.strokeStyle = '#fff'
         ctx.buffer.lineWidth = 1
         ctx.buffer.beginPath()
@@ -47,6 +48,10 @@ module.exports = props => {
       ctx.buffer.stroke()
       ctx.buffer.fill()
 
+      if (Math.floor(ctx.gameTime / 400) % 2 === 0) {
+        ctx.buffer.strokeStyle = colour
+        ctx.buffer.fillText('UPGRADE', x + 15, y - 15)
+      }
       life += ctx.timeSinceLastFrame
     }
   }
