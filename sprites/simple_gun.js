@@ -15,7 +15,7 @@ module.exports = props => {
           Bullet({
             position: [x + dx, y + dy],
             velocity: velocity,
-            radius: 5,
+            radius: damage / 2,
             colour: '#fff',
             damage
           })

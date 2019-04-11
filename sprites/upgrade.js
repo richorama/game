@@ -32,14 +32,15 @@ module.exports = props => {
     render: ctx => {
       calculatePosition(ctx)
 
-      ctx.buffer.strokeStyle = '#fff'
-      ctx.buffer.lineWidth = 1
-      ctx.buffer.beginPath()
-      ctx.buffer.arc(x, y, (life % 500) / 20  , 0, twopi)
-      ctx.buffer.stroke()
+      if (Math.floor((life / 500)) % 5 === 0) {
+        ctx.buffer.strokeStyle = '#fff'
+        ctx.buffer.lineWidth = 1
+        ctx.buffer.beginPath()
+        ctx.buffer.arc(x, y, (life % 500) / 20, 0, twopi)
+        ctx.buffer.stroke()
+      }
 
       ctx.buffer.fillStyle = colour
-      //ctx.buffer.strokeStyle = `rgb(${value}, ${value}, ${value})`
       ctx.buffer.lineWidth = 1
       ctx.buffer.beginPath()
       ctx.buffer.arc(x, y, radius, 0, twopi)

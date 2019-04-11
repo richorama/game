@@ -38,23 +38,27 @@ const shipLayer = Layer({})
 shipLayer.addSprite(ship)
 layers.add(shipLayer)
 
-
-
 const ballisticsLayer = Layer({})
 layers.add(ballisticsLayer)
 
 const enemyBallisticsLayer = Layer({})
-et.on('createupgrade', props => enemyBallisticsLayer.addSprite(new Upgrade(props)))
+et.on('create_upgrade', props => enemyBallisticsLayer.addSprite(new Upgrade(props)))
 layers.add(enemyBallisticsLayer)
 
 const weaponsLayer = Layer({})
 weaponsLayer.addSprite(SimpleGun({ rate: 200, velocity: [0, -300], offset: [0, -12.5], damage: 10 }))
 layers.add(weaponsLayer)
 
+et.on('upgrade', upgrade => {
+  if (upgrade.weapon){
+    weaponsLayer.addSprite(upgrade.weapon)
+  }
+})
+
 const enemyLayer = Layer({})
 layers.add(enemyLayer)
 
-et.on('createenemy', enemyLayer.addSprite)
+et.on('create_enemy', enemyLayer.addSprite)
 
 const effectsLayer = Layer({})
 layers.add(effectsLayer)
