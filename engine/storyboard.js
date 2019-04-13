@@ -1,9 +1,12 @@
-
 const timers = []
 module.exports.play = level => {
-  let gameTime = 0;
+  let gameTime = 0
   level((time, action) => {
     gameTime += time
     timers.push(setTimeout(action, gameTime))
   })
+}
+
+module.exports.clear = () => {
+  timers.forEach(x => clearTimeout(x))
 }
