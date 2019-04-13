@@ -1,6 +1,7 @@
 const et = require('eventthing')
 const width = 25
 const height = 25
+const colour = 'rgb(152, 195, 121)'
 
 module.exports = props => {
   let { x, y, maxSpeed, energy } = props
@@ -9,6 +10,10 @@ module.exports = props => {
   et.on('keychange', newKeys => (keys = newKeys))
   et.on('upgrade', upgrade => {
     if (upgrade.speedup) maxSpeed += upgrade.speedup
+    if (upgrade.energy) {
+      energy += upgrade.energy
+      energy = Math.min(100, energy)
+    }
   })
 
   const calculatePosition = dt => {
@@ -25,9 +30,9 @@ module.exports = props => {
   const instance = {
     hit: sprite => {
       energy -= sprite.getDamage()
-      console.log({energy})
       if (energy <= 0) {
-        et.fire('explosion', { position: [x, y], velocity: [0,0], colour:  'rgb(152, 195, 121)' })
+        et.fire('explosion', { position: [x, y], velocity: [0,0], colour })
+        et.fire('death')
         instance.removeFromLayer()
       }
       damageInflicted = true
@@ -44,7 +49,7 @@ module.exports = props => {
     getDimensions: () => [width, height],
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
-      ctx.buffer.fillStyle = damageInflicted ? 'white' : 'rgb(152, 195, 121)'
+      ctx.buffer.fillStyle = damageInflicted ? 'white' : colour
       ctx.buffer.fillRect(x - width / 2, y - width / 2, width, height)
       damageInflicted = false
     }
