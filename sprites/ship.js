@@ -22,10 +22,14 @@ module.exports = props => {
     if (newY > height / 2 && newY + height / 2 <= window.innerHeight) y = newY
   }
 
-  return {
+  const instance = {
     hit: sprite => {
       energy -= sprite.getDamage()
-      if (energy <= 0) instance.removeFromLayer()
+      console.log({energy})
+      if (energy <= 0) {
+        et.fire('explosion', { position: [x, y], velocity: [0,0], colour:  'rgb(152, 195, 121)' })
+        instance.removeFromLayer()
+      }
       damageInflicted = true
     },
     getDamage: () => 100000,
@@ -45,4 +49,5 @@ module.exports = props => {
       damageInflicted = false
     }
   }
+  return instance
 }

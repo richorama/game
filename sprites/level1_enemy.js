@@ -52,7 +52,8 @@ module.exports = props => {
             position: [x, y],
             velocity: maths.calculateTrajectory([x, y], shipPosition, 200),
             radius: 5,
-            colour: '#fff'
+            colour: '#fff',
+            damage: 5
           })
         ]
       }

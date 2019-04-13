@@ -33,7 +33,7 @@ const ship = Ship({
   x: window.innerWidth * 0.5,
   y: window.innerHeight * 0.7,
   maxSpeed: 100,
-  energy: 1000
+  energy: 25
 })
 const shipLayer = Layer({})
 shipLayer.addSprite(ship)
