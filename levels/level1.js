@@ -63,4 +63,11 @@ module.exports = add => {
     createBasicEnemy([0, window.innerHeight])
     createBasicEnemy([window.innerWidth, window.innerHeight])
   })
+
+  add(1000, () => {
+    createUpgrade({
+      text: '+ HEALTH',
+      energy: 50
+    })
+  })
 }
