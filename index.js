@@ -13,7 +13,7 @@ const storyboard = require('./engine/storyboard')
 const level1 = require('./levels/level1')
 const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
-const Health = require('./sprites/health-bar')
+const Health = require('./sprites/health_bar')
 
 const starLayer = layers.add(Layer({}))
 
