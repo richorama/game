@@ -2,7 +2,8 @@
 
 # TODO
 
-* Health / death
+* ~~Health / death~~
+* Rebirth
 * Levels menu
 * SoundFX
 * Music

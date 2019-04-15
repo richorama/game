@@ -13,6 +13,7 @@ const storyboard = require('./engine/storyboard')
 const level1 = require('./levels/level1')
 const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
+const Health = require('./sprites/health-bar')
 
 const starLayer = layers.add(Layer({}))
 
@@ -76,14 +77,16 @@ et.on('display_text', props => {
   effectsLayer.addSprite(new Text(props))
 })
 
+effectsLayer.addSprite(new Health({ width: 300, height: 20, y: 20 }))
+
 storyboard.play(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
 
-  hitDetection.detect(ballisticsLayer, enemyLayer)      // when bullets hit an enemy
-  hitDetection.detect(shipLayer, enemyLayer)            // when the ship hits an enemy
-  hitDetection.detect(shipLayer, enemyBallisticsLayer)  // when enemy bullets hit the ship
+  hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
+  hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
+  hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
   if (keyboard.keyStates().Space) weaponsLayer.fire(ctx, ballisticsLayer)
   enemyLayer.fire(ctx, enemyBallisticsLayer)
   compositor.compose(

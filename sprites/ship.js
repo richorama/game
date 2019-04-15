@@ -12,7 +12,7 @@ module.exports = props => {
     if (upgrade.speedup) maxSpeed += upgrade.speedup
     if (upgrade.energy) {
       energy += upgrade.energy
-      energy = Math.min(100, energy)
+      energy = Math.max(0, Math.min(100, energy))
     }
   })
 
@@ -30,13 +30,15 @@ module.exports = props => {
   const instance = {
     hit: sprite => {
       energy -= sprite.getDamage()
+      energy = Math.max(0, Math.min(100, energy))
       if (energy <= 0) {
-        et.fire('explosion', { position: [x, y], velocity: [0,0], colour })
+        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour })
         et.fire('death')
         instance.removeFromLayer()
       }
       damageInflicted = true
     },
+    getHealth: () => energy,
     getDamage: () => 100000,
     getExtent: () => {
       return {
