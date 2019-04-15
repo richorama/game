@@ -3,10 +3,12 @@ const twopi = 2 * Math.PI
 const et = require('eventthing')
 const maths = require('../engine/maths')
 
+const img = new Image()
+img.src = 'svg/noun_stag beetle_720017.svg'
+
 module.exports = props => {
   let { position, speed, radius, colour, energy, rate } = props
   let [x, y] = position
-  let damageInflicted = false
   let lastFired = 0
   let lastShipPosition = [x, y]
   const calculatePosition = ctx => {
@@ -23,16 +25,27 @@ module.exports = props => {
   const instance = {
     hit: sprite => {
       energy -= sprite.getDamage()
+      const explosionHeading = maths.calculateTrajectory(
+        [x, y],
+        lastShipPosition,
+        speed
+      )
       if (energy <= 0) {
-        const explosionHeading = maths.calculateTrajectory(
-          [x, y],
-          lastShipPosition,
-          speed
-        )
-        et.fire('explosion', { position: [x, y], velocity: explosionHeading, colour })
+        et.fire('explosion', {
+          position: [x, y],
+          velocity: explosionHeading,
+          colour,
+          size: 1
+        })
         instance.removeFromLayer()
+        return
       }
-      damageInflicted = true
+      et.fire('explosion', {
+        position: [x, y],
+        velocity: explosionHeading,
+        colour,
+        size: 0.1
+      })
     },
     getDamage: () => energy,
     getExtent: () => {
@@ -60,11 +73,14 @@ module.exports = props => {
     },
     render: ctx => {
       calculatePosition(ctx)
-      ctx.buffer.fillStyle = damageInflicted ? 'white' : colour
-      ctx.buffer.beginPath()
-      ctx.buffer.arc(x, y, radius, 0, twopi)
-      ctx.buffer.fill()
-      damageInflicted = false
+      const angle =
+        maths.calculateHeading([x, y], ctx.ship.getPosition()) + Math.PI * 0.5
+
+      ctx.buffer.translate(x, y)
+      ctx.buffer.rotate(angle)
+      ctx.buffer.drawImage(img, -40, -40, 80, 80)
+      ctx.buffer.rotate(-angle)
+      ctx.buffer.translate(-x, -y)
     }
   }
   return instance

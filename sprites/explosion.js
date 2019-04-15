@@ -13,14 +13,14 @@ const Spec = props => {
       calculatePosition(ctx.timeSinceLastFrame)
       ctx.buffer.fillStyle = colour
       ctx.buffer.beginPath()
-      ctx.buffer.arc(position[0], position[1], (500- life) /40, 0, twopi)
+      ctx.buffer.arc(position[0], position[1], (500 - life) / 40, 0, twopi)
       ctx.buffer.fill()
     }
   }
 }
 
 module.exports = props => {
-  let { position, velocity, colour } = props
+  let { position, velocity, colour, size } = props
   let [x, y] = position
   const [dx, dy] = velocity
   let life = 0
@@ -28,7 +28,7 @@ module.exports = props => {
   const specSpeed = 50
   const specCount = 20
 
-  for (var i = 0; i < specCount; i++) {
+  for (var i = 0; i < specCount * size; i++) {
     childSprites.push(
       Spec({
         colour,
@@ -54,13 +54,14 @@ module.exports = props => {
   const instance = {
     render: ctx => {
       calculatePosition(ctx.timeSinceLastFrame)
-      const value = 1 - life / 500
-      ctx.buffer.strokeStyle = '#ffffff'
-      ctx.buffer.lineWidth = 2
-      ctx.buffer.beginPath()
-      ctx.buffer.arc(x, y, life / 5, 0, twopi)
-      ctx.buffer.stroke()
 
+      if (size >= 1) {
+        ctx.buffer.strokeStyle = '#ffffff'
+        ctx.buffer.lineWidth = 2
+        ctx.buffer.beginPath()
+        ctx.buffer.arc(x, y, life / 5, 0, twopi)
+        ctx.buffer.stroke()
+      }
       childSprites.forEach(x => x.render(ctx, life))
 
       life += ctx.timeSinceLastFrame

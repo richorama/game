@@ -19,7 +19,11 @@
 * Bug sprites
 * ASCII are background (skull)
 
+# Credits
+
 Bug icons: https://thenounproject.com/yuluck/collection/insect/
+
+ASCII Art: http://www.roysac.com/
 
 # License
 
