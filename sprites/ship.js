@@ -32,9 +32,11 @@ module.exports = props => {
       energy -= sprite.getDamage()
       energy = Math.max(0, Math.min(100, energy))
       if (energy <= 0) {
-        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour })
+        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour, size: 10 })
         et.fire('death')
         instance.removeFromLayer()
+      } else {
+        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour, size: 0.1 })
       }
       damageInflicted = true
     },
