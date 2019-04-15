@@ -1,48 +1,44 @@
 module.exports = callback => {
   const gameStart = new Date().getTime()
   let lastFrame = new Date().getTime()
-  const viewportCanvas = document.getElementById('canvas');
-  const viewportContext = viewportCanvas.getContext('2d', { alpha: false });
+  const viewportCanvas = document.getElementById('canvas')
+  const viewportContext = viewportCanvas.getContext('2d', { alpha: false })
 
-  const bufferCanvas = document.createElement('canvas');
-  const bufferContext = bufferCanvas.getContext('2d', { alpha: false });
+  const bufferCanvas = document.createElement('canvas')
+  const bufferContext = bufferCanvas.getContext('2d', { alpha: false })
   // resize the canvas to fill browser window dynamically
-  window.addEventListener('resize', resizeCanvas, false);
+  window.addEventListener('resize', resizeCanvas, false)
   function resizeCanvas() {
-    viewportCanvas.width = window.innerWidth;
-    viewportCanvas.height = window.innerHeight;
-    bufferCanvas.width = window.innerWidth;
-    bufferCanvas.height = window.innerHeight;
+    viewportCanvas.width = window.innerWidth
+    viewportCanvas.height = window.innerHeight
+    bufferCanvas.width = window.innerWidth
+    bufferCanvas.height = window.innerHeight
   }
-  resizeCanvas();
+  resizeCanvas()
 
-  /*
-  let frameCount = 0;
-  let fps = 0;
+  let frameCount = 0
   setInterval(() => {
-    console.log(`${frameCount} fps`);
-    fps = frameCount;
-    frameCount = 0;
+    console.log(`${frameCount} fps`)
+    frameCount = 0
   }, 1000)
-  */
 
-  window.requestAnimationFrame(drawFrame);
+  window.requestAnimationFrame(drawFrame)
   function drawFrame() {
-    // frameCount++;
+    frameCount++
     bufferContext.font = '20px Orbitron'
-    bufferContext.fillStyle = 'rgb(40, 44, 52)';
-    bufferContext.fillRect(0, 0, viewportCanvas.width, viewportCanvas.height);
+    bufferContext.fillStyle = 'rgb(40, 44, 52)'
+    bufferContext.fillRect(0, 0, viewportCanvas.width, viewportCanvas.height)
 
     const now = new Date().getTime()
     callback({
       buffer: bufferContext,
       gameTime: now - gameStart,
       timeSinceLastFrame: now - lastFrame
-    });
+    })
     lastFrame = now
 
     // swap the buffer for the viewport
-    viewportContext.drawImage(bufferCanvas, 0, 0);
-    window.requestAnimationFrame(drawFrame);
+    viewportContext.drawImage(bufferCanvas, 0, 0)
+    window.requestAnimationFrame(drawFrame)
   }
 }

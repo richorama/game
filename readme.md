@@ -19,6 +19,8 @@
 * Bug sprites
 * ASCII are background (skull)
 
+Bug icons: https://thenounproject.com/yuluck/collection/insect/
+
 # License
 
 MIT

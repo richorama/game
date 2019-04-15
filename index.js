@@ -14,8 +14,13 @@ const level1 = require('./levels/level1')
 const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
 const Health = require('./sprites/health_bar')
+const Ascii = require('./sprites/ascii')
 
 const starLayer = layers.add(Layer({}))
+
+const backgroundLayer = layers.add(Layer({}))
+backgroundLayer.addSprite(Ascii({}))
+
 
 for (var i = 0; i < 100; i++) {
   const z = Math.random() + 0.5
