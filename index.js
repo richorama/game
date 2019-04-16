@@ -9,7 +9,7 @@ const SimpleGun = require('./sprites/simple_gun')
 const hitDetection = require('./engine/hit_detection')
 const et = require('eventthing')
 const Explosion = require('./sprites/explosion')
-const storyboard = require('./engine/storyboard')
+const Storyboard = require('./engine/storyboard')
 const level1 = require('./levels/level1')
 const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
@@ -84,11 +84,12 @@ et.on('display_text', props => {
 
 effectsLayer.addSprite(new Health({ width: 300, height: 20, y: 20 }))
 
-storyboard.play(level1)
+const storyboard = Storyboard(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
 
+  storyboard.tick(ctx)
   hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
   hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
   hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
