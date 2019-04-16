@@ -3,9 +3,12 @@ const width = 25
 const height = 25
 const colour = 'rgb(152, 195, 121)'
 
+const img = new Image()
+img.src = 'svg/space-ship.svg'
+
 module.exports = props => {
   let { x, y, maxSpeed, energy } = props
-  let damageInflicted = false
+  let destroyed = false
   let keys = {}
   et.on('keychange', newKeys => (keys = newKeys))
   et.on('upgrade', upgrade => {
@@ -29,16 +32,26 @@ module.exports = props => {
 
   const instance = {
     hit: sprite => {
+      if (destroyed) return
       energy -= sprite.getDamage()
       energy = Math.max(0, Math.min(100, energy))
       if (energy <= 0) {
-        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour, size: 10 })
+        et.fire('explosion', {
+          position: [x, y],
+          velocity: [0, 0],
+          colour,
+          size: 5
+        })
         et.fire('death')
-        instance.removeFromLayer()
+        destroyed = true
       } else {
-        et.fire('explosion', { position: [x, y], velocity: [0, 0], colour, size: 0.1 })
+        et.fire('explosion', {
+          position: [x, y],
+          velocity: [0, 0],
+          colour,
+          size: 0.1
+        })
       }
-      damageInflicted = true
     },
     getHealth: () => energy,
     getDamage: () => 100000,
@@ -46,16 +59,19 @@ module.exports = props => {
       return {
         x,
         y,
-        radius: 12.5
+        radius: 25
       }
+    },
+    recreate: () => {
+      destroyed = false
+      energy = 100
     },
     getPosition: () => [x, y],
     getDimensions: () => [width, height],
     render: ctx => {
+      if (destroyed) return
       calculatePosition(ctx.timeSinceLastFrame)
-      ctx.buffer.fillStyle = damageInflicted ? 'white' : colour
-      ctx.buffer.fillRect(x - width / 2, y - width / 2, width, height)
-      damageInflicted = false
+      ctx.buffer.drawImage(img, x - 30, y - 30, 60, 60)
     }
   }
   return instance

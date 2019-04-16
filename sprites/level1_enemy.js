@@ -1,5 +1,4 @@
 const Bullet = require('./bullet')
-const twopi = 2 * Math.PI
 const et = require('eventthing')
 const maths = require('../engine/maths')
 
