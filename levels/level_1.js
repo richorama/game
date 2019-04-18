@@ -1,6 +1,7 @@
 const et = require('eventthing')
 const Level1Enemy = require('../sprites/level1_enemy')
 const SimpleGun = require('../sprites/simple_gun')
+const constants = require('../engine/constants')
 
 const create = (name, value) => et.fire(name, value)
 
@@ -20,7 +21,7 @@ const createBasicEnemy = position => {
 
 const createUpgrade = upgrade => {
   create('create_upgrade', {
-    position: [0, window.innerHeight / 2],
+    position: [0, constants.height / 2],
     speed: 20,
     radius: 10,
     colour: 'rgb(152, 195, 121)',
@@ -31,7 +32,7 @@ const createUpgrade = upgrade => {
 module.exports = add => {
   add(100, () => {
     createBasicEnemy([0, 0])
-    createBasicEnemy([window.innerWidth, 0])
+    createBasicEnemy([constants.width, 0])
   })
 
   // speedup
@@ -39,8 +40,8 @@ module.exports = add => {
 
   // enemies behind
   add(5000, () => {
-    createBasicEnemy([0, window.innerHeight])
-    createBasicEnemy([window.innerWidth, window.innerHeight])
+    createBasicEnemy([0, constants.height])
+    createBasicEnemy([constants.width, constants.height])
   })
 
   // rear facing gun
@@ -59,9 +60,9 @@ module.exports = add => {
   // 4 more enemies
   add(8000, () => {
     createBasicEnemy([0, 0])
-    createBasicEnemy([window.innerWidth, 0])
-    createBasicEnemy([0, window.innerHeight])
-    createBasicEnemy([window.innerWidth, window.innerHeight])
+    createBasicEnemy([constants.width, 0])
+    createBasicEnemy([0, constants.height])
+    createBasicEnemy([constants.width, constants.height])
   })
 
   add(1000, () => {

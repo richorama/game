@@ -1,4 +1,5 @@
 const twopi = 2 * Math.PI
+const constants = require('../engine/constants')
 
 const Spec = props => {
   let { position, velocity, colour } = props
@@ -45,9 +46,9 @@ module.exports = props => {
     x += velocity[0] / dt
     y += velocity[1] / dt
 
-    if (dx > 0 && x > window.innerWidth) return instance.removeFromLayer()
+    if (dx > 0 && x > constants.width) return instance.removeFromLayer()
     if (dx < 0 && x < 0) return instance.removeFromLayer()
-    if (dy > 0 && y > window.innerHeight) return instance.removeFromLayer()
+    if (dy > 0 && y > constants.height) return instance.removeFromLayer()
     if (dy < 0 && y < 0) return instance.removeFromLayer()
   }
 

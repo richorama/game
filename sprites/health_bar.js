@@ -1,3 +1,4 @@
+const constants = require('../engine/constants')
 const colour = 'rgb(152, 195, 121)'
 
 module.exports = props => {
@@ -7,7 +8,7 @@ module.exports = props => {
     render: ctx => {
       const health = ctx.ship.getHealth()
 
-      const x = (window.innerWidth - width) / 2
+      const x = (constants.width - width) / 2
 
       ctx.buffer.beginPath()
       ctx.buffer.strokeStyle = colour

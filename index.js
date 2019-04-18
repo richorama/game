@@ -15,6 +15,7 @@ const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
 const Health = require('./sprites/health_bar')
 const Ascii = require('./sprites/ascii')
+const constants = require('./engine/constants')
 
 const starLayer = layers.add(Layer({}))
 
@@ -26,8 +27,8 @@ for (var i = 0; i < 100; i++) {
   const z = Math.random() + 0.5
   starLayer.addSprite(
     Star({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: Math.random() * constants.width,
+      y: Math.random() * constants.height,
       speed: z * 50,
       colour: `rgb(${(86 * z) / 2}, ${(182 * z) / 2}, ${(194 * z) / 2})`,
       radius: z * 2
@@ -36,8 +37,8 @@ for (var i = 0; i < 100; i++) {
 }
 
 const ship = Ship({
-  x: window.innerWidth * 0.5,
-  y: window.innerHeight * 0.7,
+  x: constants.width * 0.5,
+  y: constants.height * 0.7,
   maxSpeed: 100,
   energy: 25
 })
@@ -88,6 +89,7 @@ const storyboard = Storyboard(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
+  ctx.enemies = enemyLayer.all()
 
   storyboard.tick(ctx)
   hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy

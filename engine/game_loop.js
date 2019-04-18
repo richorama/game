@@ -1,3 +1,6 @@
+
+const constants = require('./constants')
+
 module.exports = callback => {
   const gameStart = new Date().getTime()
   let lastFrame = new Date().getTime()
@@ -9,10 +12,10 @@ module.exports = callback => {
   // resize the canvas to fill browser window dynamically
   window.addEventListener('resize', resizeCanvas, false)
   function resizeCanvas() {
-    viewportCanvas.width = window.innerWidth
-    viewportCanvas.height = window.innerHeight
-    bufferCanvas.width = window.innerWidth
-    bufferCanvas.height = window.innerHeight
+    viewportCanvas.width = constants.width
+    viewportCanvas.height = constants.height
+    bufferCanvas.width = constants.width
+    bufferCanvas.height = constants.height
   }
   resizeCanvas()
 

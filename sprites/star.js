@@ -1,3 +1,4 @@
+const constants = require('../engine/constants')
 const twopi = 2 * Math.PI
 
 module.exports = props => {
@@ -5,9 +6,9 @@ module.exports = props => {
 
   const calculatePosition = dt => {
     y += speed / dt
-    if (y - radius * 2 > window.innerHeight) {
+    if (y - radius * 2 > constants.height) {
       y = radius * -2
-      x = Math.random() * window.innerWidth
+      x = Math.random() * constants.width
     }
   }
 
