@@ -10,7 +10,7 @@ module.exports = props => {
   const calculatePosition = ctx => {
     const newHeading = maths.calculateTrajectory(
       [x, y],
-      ctx.ship.getPosition(),
+      [window.innerWidth / 2, window.innerHeight / 2],
       speed / ctx.timeSinceLastFrame
     )
     x += newHeading[0]
@@ -20,7 +20,12 @@ module.exports = props => {
   const instance = {
     hit: sprite => {
       et.fire('upgrade', upgrade), instance.removeFromLayer()
-      et.fire('display_text', { position: [x + 15, y + 15], colour, text: upgrade.text, velocity: [0,-10] })
+      et.fire('display_text', {
+        position: [x + 15, y + 15],
+        colour,
+        text: upgrade.text,
+        velocity: [0, -10]
+      })
     },
     getDamage: () => 0,
     getExtent: () => {

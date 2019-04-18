@@ -10,6 +10,7 @@ module.exports = props => {
       const x = (window.innerWidth - width) / 2
 
       ctx.buffer.beginPath()
+      ctx.buffer.lineWidth = 1
       ctx.buffer.strokeStyle = colour
       ctx.buffer.rect(x - 4, y - 4, width + 4, height + 4)
       ctx.buffer.stroke()

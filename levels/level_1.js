@@ -1,6 +1,7 @@
 const et = require('eventthing')
 const Level1Enemy = require('../sprites/level1_enemy')
 const SimpleGun = require('../sprites/simple_gun')
+const BlasterGun = require('../sprites/blaster_gun')
 
 const create = (name, value) => et.fire(name, value)
 
@@ -29,13 +30,26 @@ const createUpgrade = upgrade => {
 }
 
 module.exports = add => {
+
+  add(100, () =>
+    createUpgrade({
+      text: '+ BEAM WEAPON',
+      weapon: BlasterGun({
+        rate: 1000,
+        velocity: [0, -200],
+        offset: [30, 0],
+        damage: 30
+      })
+    })
+  )
+
   add(100, () => {
     createBasicEnemy([0, 0])
     createBasicEnemy([window.innerWidth, 0])
   })
 
   // speedup
-  add(100, () => createUpgrade({ speedup: 100, text: '+ SPEED UP' }))
+  add(1000, () => createUpgrade({ speedup: 100, text: '+ SPEED UP' }))
 
   // enemies behind
   add(5000, () => {
@@ -63,6 +77,8 @@ module.exports = add => {
     createBasicEnemy([0, window.innerHeight])
     createBasicEnemy([window.innerWidth, window.innerHeight])
   })
+
+
 
   add(1000, () => {
     createUpgrade({
