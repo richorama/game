@@ -1,5 +1,6 @@
 const et = require('eventthing')
-const Level1Enemy = require('../sprites/level1_enemy')
+const Beetle = require('../sprites/beetle_enemy')
+const Spider = require('../sprites/spider_enemy')
 const SimpleGun = require('../sprites/simple_gun')
 const BlasterGun = require('../sprites/blaster_gun')
 
@@ -8,13 +9,27 @@ const create = (name, value) => et.fire(name, value)
 const createBasicEnemy = position => {
   create(
     'create_enemy',
-    Level1Enemy({
+    Beetle({
       position: position,
       speed: 30,
       radius: 20,
       colour: 'rgb(224, 108, 117)',
       energy: 30,
       rate: 2000
+    })
+  )
+}
+
+const createSpider = position => {
+  create(
+    'create_enemy',
+    Spider({
+      position: position,
+      speed: 10,
+      radius: 30,
+      colour: '#61AFEF',
+      energy: 70,
+      rate: 1000
     })
   )
 }
@@ -44,8 +59,8 @@ module.exports = add => {
   )
 
   add(100, () => {
-    createBasicEnemy([0, 0])
-    createBasicEnemy([window.innerWidth, 0])
+    createSpider([0, 0])
+    createSpider([window.innerWidth, 0])
   })
 
   // speedup
