@@ -72,7 +72,11 @@ module.exports = props => {
     render: ctx => {
       calculatePosition(ctx)
       const angle =
-        maths.calculateHeading([x, y], ctx.ship.getPosition()) + Math.PI * 0.5
+        maths.calculateHeading(
+          [x, y],
+          [window.innerWidth / 2, window.innerHeight / 2]
+        ) +
+        Math.PI * 0.5
 
       ctx.buffer.translate(x, y)
       ctx.buffer.rotate(angle)
