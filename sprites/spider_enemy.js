@@ -19,6 +19,7 @@ module.exports = props => {
     x += newHeading[0]
     y += newHeading[1]
   }
+  let spriteTime = 0
 
   const instance = {
     hit: sprite => {
@@ -54,6 +55,7 @@ module.exports = props => {
       }
     },
     fire: ctx => {
+      if (spriteTime < 3000) return
       const elapsedTime = ctx.gameTime - lastFired
       if (elapsedTime >= rate) {
         lastFired = ctx.gameTime
@@ -70,7 +72,8 @@ module.exports = props => {
       }
     },
     render: ctx => {
-      calculatePosition(ctx)
+      spriteTime += ctx.timeSinceLastFrame
+      if (spriteTime < 3000) calculatePosition(ctx)
       const angle =
         maths.calculateHeading(
           [x, y],
