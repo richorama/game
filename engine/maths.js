@@ -16,7 +16,7 @@ module.exports.getNearest = (source, targets) => {
   let nearest = targets[0]
   let distanceSqrd = getDistanceSqrd(source, nearest) 
   for (var i = 1; i < targets.length; i++){
-    let nextDist = getDistanceSqrd(source, targets[i])
+    let nextDist = getDistanceSqrd(source, targets[i].getPosition())
     if (nextDist < distanceSqrd){
       distanceSqrd = nextDist
       nearest = targets[i]
