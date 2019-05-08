@@ -88,6 +88,7 @@ const storyboard = Storyboard(level1)
 
 gameLoop(ctx => {
   ctx.ship = ship
+  ctx.enemies = enemyLayer
 
   storyboard.tick(ctx)
   hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy

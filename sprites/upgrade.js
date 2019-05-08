@@ -37,9 +37,9 @@ module.exports = props => {
     },
     render: ctx => {
       calculatePosition(ctx)
-
+      
+      ctx.buffer.strokeStyle = '#fff'
       if (Math.floor(life / 500) % 5 === 0) {
-        ctx.buffer.strokeStyle = '#fff'
         ctx.buffer.lineWidth = 1
         ctx.buffer.beginPath()
         ctx.buffer.arc(x, y, (life % 500) / 20, 0, twopi)

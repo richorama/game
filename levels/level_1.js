@@ -3,6 +3,7 @@ const Beetle = require('../sprites/beetle_enemy')
 const Spider = require('../sprites/spider_enemy')
 const SimpleGun = require('../sprites/simple_gun')
 const BlasterGun = require('../sprites/blaster_gun')
+const MissileLauncher = require('../sprites/missile_launcher')
 
 const create = (name, value) => et.fire(name, value)
 
@@ -51,7 +52,7 @@ module.exports = add => {
       text: '+ BEAM WEAPON',
       weapon: BlasterGun({
         rate: 1000,
-        velocity: [0, -200],
+        velocity: [0, -250],
         offset: [30, 0],
         damage: 30
       })
@@ -81,6 +82,17 @@ module.exports = add => {
         velocity: [0, 300],
         offset: [0, 12.5],
         damage: 5
+      })
+    })
+  )
+
+  add(300, () =>
+    createUpgrade({
+      text: '+ HEAT SEEKER',
+      weapon: MissileLauncher({
+        rate: 100,
+        offset: [0, -12.5],
+        damage: 2
       })
     })
   )

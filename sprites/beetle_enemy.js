@@ -47,6 +47,7 @@ module.exports = props => {
       })
     },
     getDamage: () => energy,
+    getPosition: () => [x, y],
     getExtent: () => {
       return {
         x,

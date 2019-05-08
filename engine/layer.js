@@ -4,7 +4,10 @@ module.exports = config => {
   return {
     all: () => sprites,
     addSprite: sprite => {
-      sprite.removeFromLayer = () => sprites = sprites.filter(x => x !== sprite)
+      sprite.removeFromLayer = () => {
+        sprites = sprites.filter(x => x !== sprite)
+        sprite.destroyed = true
+      }
       sprites.push(sprite)
     },
     removeSprite: sprite => sprites = sprites.filter(x => x !== sprite),
