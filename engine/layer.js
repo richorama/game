@@ -3,6 +3,10 @@ module.exports = config => {
 
   return {
     all: () => sprites,
+    clear: () => {
+      sprites.forEach(sprite => { sprite.destroyed = true })
+      sprites = []
+    },
     addSprite: sprite => {
       sprite.removeFromLayer = () => {
         sprites = sprites.filter(x => x !== sprite)

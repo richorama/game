@@ -4,8 +4,8 @@ module.exports = props => {
   let life = 0
 
   const calculatePosition = ctx => {
-    x += velocity[0] / ctx.timeSinceLastFrame
-    y += velocity[1] / ctx.timeSinceLastFrame
+    x += velocity[0] * ctx.timeSinceLastFrame / 1000
+    y += velocity[1] * ctx.timeSinceLastFrame / 1000
   }
 
   const instance = {

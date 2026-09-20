@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 240">
+  <defs>
+    <linearGradient id="shell" x2="1" y2="1">
+      <stop stop-color="#f0c2ff"/><stop offset=".35" stop-color="#a45cbb"/><stop offset=".7" stop-color="#492b66"/><stop offset="1" stop-color="#201d3c"/>
+    </linearGradient>
+    <linearGradient id="wing" x2="0.4" y2="1">
+      <stop stop-color="#715591"/><stop offset=".5" stop-color="#31233e"/><stop offset="1" stop-color="#110e21"/>
+    </linearGradient>
+    <radialGradient id="heart">
+      <stop stop-color="#fff9e0"/><stop offset=".25" stop-color="#ffcd8b"/><stop offset=".65" stop-color="#ec649e"/><stop offset="1" stop-color="#5c294f"/>
+    </radialGradient>
+  </defs>
+  <g stroke="#e4abf7" stroke-width="2" stroke-linejoin="round">
+    <path d="M88 76 26 28 8 98 57 150 91 137Z M172 76 234 28 252 98 203 150 169 137Z" fill="url(#wing)"/>
+    <path d="M85 91 31 49 21 94 65 128Z M175 91 229 49 239 94 195 128Z" fill="#432e58" stroke="#9e76b9"/>
+    <path d="M31 49 48 96 65 128 M229 49 212 96 195 128" fill="none" stroke="#c187cb"/>
+    <path d="M92 100 46 114 20 154 39 141 68 131 97 126 M168 100 214 114 240 154 221 141 192 131 163 126" fill="url(#shell)"/>
+    <path d="M94 132 50 155 44 194 60 171 102 158 M166 132 210 155 216 194 200 171 158 158" fill="url(#shell)"/>
+    <path d="M103 160 76 192 90 223 88 195 116 181 M157 160 184 192 170 223 172 195 144 181" fill="url(#shell)"/>
+    <path d="M108 72 96 33 117 50 130 7 143 50 164 33 152 72Z" fill="url(#shell)" stroke="#f8d0ff"/>
+    <path d="M130 55C83 55 78 92 84 132 89 174 110 205 130 224 150 205 171 174 176 132 182 92 177 55 130 55Z" fill="url(#shell)" stroke-width="3"/>
+    <path d="M91 109Q130 127 169 109 M91 139Q130 159 169 139 M101 166Q130 184 159 166 M114 192Q130 203 146 192" fill="none" stroke="#deb2ec" stroke-width="3"/>
+    <path d="M130 70V214" stroke="#352944" stroke-width="4"/>
+    <path d="M97 76 121 82 116 95 99 89Z M163 76 139 82 144 95 161 89Z" fill="#fff1b4" stroke="#ffb772"/>
+    <path d="M111 94 104 113 118 105 M149 94 156 113 142 105" fill="#dbb6e9"/>
+    <ellipse cx="130" cy="139" rx="23" ry="29" fill="url(#heart)" stroke="#ffd9e9"/>
+    <path d="M130 118 137 137 130 157 123 137Z" fill="#fff7dc" stroke="none"/>
+  </g>
+</svg>

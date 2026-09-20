@@ -7,7 +7,7 @@ const initialPosition = window.innerHeight - (level1Art.length * height)
 module.exports = props => {
   return {
     render: ctx => {
-      ctx.buffer.fillStyle = '#444'
+      ctx.buffer.fillStyle = '#182a40'
       ctx.buffer.font = '20px Monospace'
       let y = initialPosition + ctx.gameTime / 50
       var windowHeight = window.innerHeight
@@ -28,7 +28,7 @@ module.exports = props => {
           changedColour = true
         }
         ctx.buffer.fillText(line, x, y)
-        if (changedColour) ctx.buffer.fillStyle = '#444'
+        if (changedColour) ctx.buffer.fillStyle = '#182a40'
       })
 
       ctx.buffer.font = '20px Orbitron'

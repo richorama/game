@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="hull" x2="0.8" y2="1">
+      <stop stop-color="#d2efff"/><stop offset=".38" stop-color="#467692"/><stop offset="1" stop-color="#152c4a"/>
+    </linearGradient>
+    <linearGradient id="glass" x2="0" y2="1">
+      <stop stop-color="#efffff"/><stop offset=".4" stop-color="#78f7ff"/><stop offset="1" stop-color="#127cba"/>
+    </linearGradient>
+  </defs>
+  <path d="M50 3 65 42 82 51 97 88 68 77 61 94 39 94 32 77 3 88 18 51 35 42Z" fill="#11283d" stroke="#8af4ff" stroke-width="2"/>
+  <path d="M50 6 61 48 64 79 55 88 45 88 36 79 39 48Z" fill="url(#hull)" stroke="#c9edff"/>
+  <path d="M35 45 23 55 10 80 31 69Z M65 45 77 55 90 80 69 69Z" fill="url(#hull)" stroke="#609cbd"/>
+  <path d="M50 24 56 45 55 60 45 60 44 45Z" fill="url(#glass)" stroke="#adfaff"/>
+  <path d="M50 11V20 M42 69 50 75 58 69 M22 61 17 75 M78 61 83 75" fill="none" stroke="#dbfaff" stroke-width="1.5"/>
+  <path d="M29 60 25 86H32L36 59Z M71 60 75 86H68L64 59Z" fill="#213b53" stroke="#7defff"/>
+  <path d="M44 84H56V96H44Z" fill="#0b1b2d" stroke="#7defff"/>
+  <path d="M46 90H54V96H46Z M27 82H31V89H27Z M69 82H73V89H69Z" fill="#b6ffff"/>
+  <path d="M39 74 43 80 M61 74 57 80" stroke="#ffce70" stroke-width="3"/>
+</svg>

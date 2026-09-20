@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "browserify -g [ babelify --presets [ \"@babel/preset-env\" ] ] index.js -g [ envify --NODE_ENV production ] -o ./index.min.js",
+    "test": "node --test",
     "watch": "watchify -v -g [ babelify --presets [ \"@babel/preset-env\" ] ]  index.js -g [ envify --NODE_ENV development ] -o ./index.min.js"
   },
   "author": "richorama",
