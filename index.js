@@ -9,8 +9,9 @@ const SimpleGun = require('./sprites/simple_gun')
 const hitDetection = require('./engine/hit_detection')
 const et = require('eventthing')
 const Explosion = require('./sprites/explosion')
-const Storyboard = require('./engine/storyboard')
+const Campaign = require('./engine/campaign')
 const level1 = require('./levels/level_1')
+const level2 = require('./levels/level_2')
 const Upgrade = require('./sprites/upgrade')
 const Text = require('./sprites/text')
 const Health = require('./sprites/health_bar')
@@ -19,6 +20,7 @@ const Hud = require('./sprites/hud')
 const Audio = require('./engine/audio')
 const MuzzleFlash = require('./sprites/muzzle_flash')
 const BlackHole = require('./sprites/black_hole')
+const PortalPair = require('./sprites/portal_pair')
 
 const audio = Audio(document.getElementById('sound'))
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -32,6 +34,7 @@ const backgroundLayer = layers.add(Layer({}))
 backgroundLayer.addSprite(Ascii({}))
 const hazardLayer = layers.add(Layer({}))
 et.on('create_black_hole', props => hazardLayer.addSprite(BlackHole(props)))
+et.on('create_portal_pair', props => hazardLayer.addSprite(PortalPair(props)))
 
 
 for (var i = 0; i < 140; i++) {
@@ -92,6 +95,7 @@ et.on('explosion', props => {
   if (props.size >= 1) shake = Math.min(6, Math.max(shake, props.size * 2))
 })
 et.on('weapon_fire', props => effectsLayer.addSprite(MuzzleFlash(props)))
+et.on('portal_transit', props => effectsLayer.addSprite(MuzzleFlash({ ...props, kind: 'portal' })))
 et.on('ship_hit', () => { shake = 6; flash = 0.16; flashColour = '#ff805f' })
 et.on('upgrade', () => { flash = 0.08; flashColour = '#65e8ff' })
 
@@ -112,18 +116,21 @@ et.on('keydown', key => {
   if (key === 'KeyM') audio.toggle()
 })
 
-let storyboard = Storyboard(level1)
+const campaign = Campaign([level1, level2])
 let runStartedAt = 0
-let levelComplete = false
-let sectorCleared = false
 const gameplayLayers = [ballisticsLayer, enemyBallisticsLayer, weaponsLayer, enemyLayer, effectsLayer, hazardLayer]
 const gravityLayers = [shipLayer, enemyLayer, ballisticsLayer, enemyBallisticsLayer]
-et.on('level_complete', () => { levelComplete = true })
+et.on('boss_arrival', campaign.bossArrived)
 et.on('boss_defeated', () => {
+  if (!campaign.bossDefeated()) return
   enemyLayer.clear()
   enemyBallisticsLayer.clear()
+  ballisticsLayer.clear()
   hazardLayer.clear()
-  et.fire('level_complete')
+  if (!campaign.isComplete()) {
+    keyboard.reset()
+    ship.teleport([window.innerWidth * 0.5, window.innerHeight * 0.7])
+  }
 })
 
 gameLoop(ctx => {
@@ -138,9 +145,7 @@ gameLoop(ctx => {
     ship.recreate()
     hud.reset()
     addStarterWeapon()
-    storyboard = Storyboard(level1)
-    levelComplete = false
-    sectorCleared = false
+    campaign.reset()
   }
   ctx.gameTime -= runStartedAt
   ctx.ship = ship
@@ -148,14 +153,17 @@ gameLoop(ctx => {
   ctx.weapons = weaponsLayer
   hazardLayer.all().forEach(hazard => hazard.update(ctx, gravityLayers))
 
-  if (!ship.isDestroyed() && !sectorCleared) {
-    storyboard.tick(ctx)
-    hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
-    hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
-    hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
-    if (!ship.isDestroyed() && keyboard.keyStates().Space) weaponsLayer.fire(ctx, ballisticsLayer)
-    if (!ship.isDestroyed()) enemyLayer.fire(ctx, enemyBallisticsLayer)
-    if (levelComplete && enemyLayer.all().length === 0) sectorCleared = true
+  if (!ship.isDestroyed() && !campaign.isComplete()) {
+    campaign.tick(ctx)
+    if (!campaign.isTransitioning()) {
+      hitDetection.detect(ballisticsLayer, enemyLayer) // when bullets hit an enemy
+      hitDetection.detect(shipLayer, enemyLayer) // when the ship hits an enemy
+      hitDetection.detect(shipLayer, enemyBallisticsLayer) // when enemy bullets hit the ship
+      if (!ship.isDestroyed() && !campaign.isTransitioning() && !campaign.isComplete()) {
+        if (keyboard.keyStates().Space) weaponsLayer.fire(ctx, ballisticsLayer)
+        enemyLayer.fire(ctx, enemyBallisticsLayer)
+      }
+    }
   }
   ctx.buffer.save()
   if (!reducedMotion.matches && shake > 0) {

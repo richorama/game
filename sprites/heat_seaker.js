@@ -26,6 +26,12 @@ module.exports = props => {
 
   const instance = {
     isProjectile: true,
+    teleport: (position, direction) => {
+      x = position[0]
+      y = position[1]
+      const currentSpeed = Math.hypot(...velocity)
+      velocity = direction.map(component => component * currentSpeed)
+    },
     accelerate: (ax, ay, dt) => {
       velocity[0] += ax * dt / 1000
       velocity[1] += ay * dt / 1000

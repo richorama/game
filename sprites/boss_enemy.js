@@ -5,8 +5,8 @@ const GravityMotion = require('../engine/gravity_motion')
 const img = new Image()
 img.src = 'svg/hive_queen.svg'
 
-module.exports = () => {
-  const maxEnergy = 2600
+module.exports = (props = {}) => {
+  const { name = 'HIVE QUEEN', maxEnergy = 2600, attackSpeed = 1, rift = false } = props
   let energy = maxEnergy
   let x = window.innerWidth / 2
   let y = -120
@@ -17,11 +17,21 @@ module.exports = () => {
   const gravity = GravityMotion()
   let driftX = 0
   let driftY = 0
-  const colour = () => ['#d994ff', '#ff9dd8', '#ff805f'][phase - 1]
+  let pathX = x
+  let pathY = y
+  const colour = () => (rift ? ['#a8ffff', '#b5a0ff', '#ffffff'] : ['#d994ff', '#ff9dd8', '#ff805f'])[phase - 1]
 
   const instance = {
     isBoss: true,
     accelerate: gravity.accelerate,
+    teleport: position => {
+      x = position[0]
+      y = position[1]
+      driftX = x - pathX
+      driftY = y - pathY
+      gravity.reset()
+    },
+    getName: () => name,
     getPosition: () => [x, y],
     getExtent: () => ({ x, y, radius: 82 }),
     getHealth: () => energy,
@@ -37,7 +47,7 @@ module.exports = () => {
           position: [x + offset, y], velocity: [offset, 20],
           colour: colour(), size: offset === 0 ? 5 : 2
         })
-        et.fire('enemy_destroyed', 2500)
+        et.fire('enemy_destroyed', rift ? 4000 : 2500)
         et.fire('boss_defeated')
         return
       }
@@ -51,7 +61,7 @@ module.exports = () => {
       }
     },
     fire: ctx => {
-      if (age < 3000 || ctx.gameTime - lastFired < [1800, 1350, 950][phase - 1]) return []
+      if (age < 3000 || ctx.gameTime - lastFired < [1800, 1350, 950][phase - 1] / attackSpeed) return []
       lastFired = ctx.gameTime
       volleys++
       const heading = maths.calculateHeading([x, y], ctx.ship.getPosition())
@@ -75,10 +85,11 @@ module.exports = () => {
       driftX += pullX
       driftY += pullY
       const entry = Math.min(1, age / 3000)
-      x = Math.max(82, Math.min(window.innerWidth - 82,
-        window.innerWidth / 2 + Math.sin(age / 1600) * Math.min(280, window.innerWidth * 0.3) * entry + driftX))
-      y = -120 + (Math.min(160, window.innerHeight * 0.24) + 120) * entry +
-        Math.sin(age / 800) * 12 * entry + driftY
+      pathX = window.innerWidth / 2 + Math.sin(age / 1600) * Math.min(280, window.innerWidth * 0.3) * entry
+      pathY = -120 + (Math.min(160, window.innerHeight * 0.24) + 120) * entry +
+        Math.sin(age / 800) * 12 * entry
+      x = Math.max(82, Math.min(window.innerWidth - 82, pathX + driftX))
+      y = pathY + driftY
       if (entry === 1) y = Math.max(82, Math.min(window.innerHeight - 82, y))
       const buffer = ctx.buffer
       buffer.save()
@@ -102,7 +113,10 @@ module.exports = () => {
         buffer.lineTo(side * 110, -35)
         buffer.stroke()
       }
+      buffer.save()
+      if (rift) buffer.filter = 'hue-rotate(65deg)'
       buffer.drawImage(img, -130, -120, 260, 240)
+      buffer.restore()
       buffer.shadowBlur = 12
       buffer.rotate(age / 1200)
       for (let i = 0; i < 6; i++) {

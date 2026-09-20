@@ -29,6 +29,11 @@ module.exports = props => {
 
   const instance = {
     accelerate: gravity.accelerate,
+    teleport: position => {
+      x = position[0]
+      y = position[1]
+      gravity.reset()
+    },
     hit: sprite => {
       if (instance.destroyed) return
       energy -= sprite.getDamage()

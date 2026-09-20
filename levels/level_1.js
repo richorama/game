@@ -1,95 +1,10 @@
 const et = require('eventthing')
-const Beetle = require('../sprites/beetle_enemy')
 const Spider = require('../sprites/spider_enemy')
-const Wasp = require('../sprites/wasp_enemy')
-const SimpleGun = require('../sprites/simple_gun')
-const BlasterGun = require('../sprites/blaster_gun')
-const MissileLauncher = require('../sprites/missile_launcher')
 const Boss = require('../sprites/boss_enemy')
-const RotaryGun = require('../sprites/rotary_gun')
 const Drone = require('../sprites/drone_enemy')
-
-const createEnemy = enemy => et.fire('create_enemy', enemy)
-const createUpgrade = (upgrade, lane = 0.5) => et.fire('create_upgrade', {
-  position: [window.innerWidth * lane, -20],
-  speed: 130,
-  radius: 16,
-  colour: upgrade.weapon || upgrade.shield ? '#65e8ff' : '#aaff79',
-  upgrade
-})
-
-const beetle = (lane, armoured = false) => Beetle({
-  position: [window.innerWidth * lane, -50],
-  speed: armoured ? 35 : 55,
-  radius: armoured ? 34 : 24,
-  colour: armoured ? '#d994ff' : '#ff9266',
-  energy: armoured ? 180 : 40,
-  rate: armoured ? 2300 : 2700,
-  projectileSpeed: 220,
-  armoured
-})
-
-const createWasps = count => {
-  for (let i = 0; i < count; i++) {
-    createEnemy(Wasp({
-      position: [window.innerWidth * (i + 1) / (count + 1), -80 - i * 65],
-      phase: i
-    }))
-  }
-}
-
-const weapons = [
-  () => ({
-    name: 'Spread shot',
-    weapon: SimpleGun({
-      rate: 350, velocity: [0, -620], damage: 8, colour: '#65e8ff', radius: 6,
-      barrels: [-0.32, 0, 0.32].map(angle => ({ angle, offset: [0, -30] }))
-    })
-  }),
-  () => ({
-    name: 'Twin pulse',
-    weapon: SimpleGun({
-      rate: 140, velocity: [0, -720], damage: 6, colour: '#ffd36a', radius: 6,
-      barrels: [-22, 22].map(x => ({ angle: 0, offset: [x, -15] }))
-    })
-  }),
-  () => ({
-    name: 'Beam cannon',
-    weapon: BlasterGun({
-      rate: 24, velocity: [0, -700], offset: [30, 0], damage: 2
-    })
-  }),
-  () => ({
-    name: 'Heat seeker',
-    weapon: MissileLauncher({ rate: 450, offset: [0, -30], damage: 18 })
-  }),
-  () => ({
-    name: 'Rear shot',
-    weapon: SimpleGun({
-      rate: 250, velocity: [0, 520], offset: [0, 30], damage: 12, colour: '#d994ff'
-    })
-  }),
-  () => ({
-    name: 'Flank cannons',
-    weapon: SimpleGun({
-      rate: 300, velocity: [0, -540], damage: 16, colour: '#ff9dd8', radius: 8,
-      barrels: [-1, 1].map(side => ({
-        angle: side * Math.PI / 2, offset: [side * 25, 0]
-      }))
-    })
-  }),
-  () => ({
-    name: 'Heavy pulse',
-    weapon: SimpleGun({
-      rate: 550, velocity: [0, -460], offset: [0, -35], damage: 55,
-      colour: '#aaff79', radius: 13
-    })
-  }),
-  () => ({
-    name: 'Rotary halo',
-    weapon: RotaryGun()
-  })
-]
+const { enemy: createEnemy, pickup: createUpgrade, beetle, wasps: createWasps } = require('./spawns')
+const weapons = require('./weapons')
+const unlocks = { 1: weapons.spread, 2: weapons.twin, 3: weapons.beam, 5: weapons.seeker, 7: weapons.rear }
 
 const support = [
   { shield: 40, text: '+ SHIELD' },
@@ -122,8 +37,8 @@ module.exports = add => {
       if (wave >= 6) createEnemy(beetle(0.5, true))
     })
     add(2000, () => {
-      if (wave <= weapons.length) {
-        const upgrade = weapons[wave - 1]()
+      if (unlocks[wave]) {
+        const upgrade = unlocks[wave]()
         createUpgrade({ ...upgrade, text: '+ ' + upgrade.name.toUpperCase() })
       } else {
         createUpgrade({ energy: 50, text: '+ REPAIR' })
@@ -159,7 +74,7 @@ module.exports = add => {
   }
   add(8000, () => {
     createEnemy(Boss())
-    et.fire('boss_arrival')
+    et.fire('boss_arrival', 'HIVE QUEEN')
     createUpgrade({ energy: 50, shield: 50, text: '+ BOSS SUPPLIES' })
   })
 }

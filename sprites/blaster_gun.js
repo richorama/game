@@ -10,6 +10,8 @@ module.exports = props => {
 
   let previous = null
   let lastSegment = null
+  let lastSegmentVersion = 0
+  let shipVersion = 0
   let nextShot = 0
   let heat = 0
   let overheated = false
@@ -33,11 +35,14 @@ module.exports = props => {
       }
       const position = ctx.ship.getPosition()
       const now = ctx.gameTime
-      if (!previous || now - previous.time > ctx.timeSinceLastFrame + 0.01) {
+      const currentShipVersion = ctx.ship.teleportVersion || 0
+      if (!previous || now - previous.time > ctx.timeSinceLastFrame + 0.01 || currentShipVersion !== shipVersion) {
         previous = { position, time: now }
         lastSegment = null
         nextShot = now
       }
+      shipVersion = currentShipVersion
+      if (lastSegment && lastSegment.teleportVersion !== lastSegmentVersion) lastSegment = null
       const shots = []
       while (nextShot <= now) {
         const elapsed = now - previous.time
@@ -51,6 +56,7 @@ module.exports = props => {
         })
         shots.push(segment)
         lastSegment = segment
+        lastSegmentVersion = segment.teleportVersion
         nextShot += rate
         heat = Math.min(100, heat + 2)
         if (heat === 100) {

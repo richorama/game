@@ -4,14 +4,23 @@ module.exports = () => {
   let score = 0
   let wave = { number: 1, total: 9 }
   let complete = false
+  let round = 1
+  let transitioning = false
   let announcement = ''
   let announcementAge = 2000
   const announce = text => { announcement = text; announcementAge = 0 }
   const weapons = ['Blaster']
   et.on('enemy_destroyed', points => { score += points })
   et.on('wave', value => { wave = value; announce('WAVE ' + value.number + ' / ' + value.total) })
-  et.on('boss_arrival', () => announce('WARNING: HIVE QUEEN'))
-  et.on('boss_phase', phase => announce('QUEEN ENRAGED - PHASE ' + phase))
+  et.on('boss_arrival', name => announce('WARNING: ' + (name || 'HIVE QUEEN')))
+  et.on('boss_phase', phase => announce('BOSS ENRAGED - PHASE ' + phase))
+  et.on('round_complete', () => { transitioning = true })
+  et.on('round_started', value => {
+    round = value.number
+    transitioning = false
+    wave = { number: 1, total: 9 }
+    announce('ROUND ' + round + ' - INTO THE RIFT')
+  })
   et.on('level_complete', () => { complete = true })
   et.on('upgrade', upgrade => {
     if (upgrade.weapon && upgrade.name) weapons.push(upgrade.name)
@@ -22,6 +31,8 @@ module.exports = () => {
       score = 0
       wave = { number: 1, total: 9 }
       complete = false
+      round = 1
+      transitioning = false
       announcement = ''
       announcementAge = 2000
       weapons.splice(0, weapons.length, 'Blaster')
@@ -35,6 +46,7 @@ module.exports = () => {
       buffer.fillStyle = '#c7eaff'
       buffer.fillText('SCORE ' + score.toString().padStart(5, '0'), 20, 65)
       buffer.textAlign = 'right'
+      buffer.fillText('ROUND ' + round + ' / 2', width - 20, 86)
       buffer.fillText('WAVE ' + wave.number + ' / ' + wave.total, width - 20, 65)
       buffer.textAlign = 'center'
       buffer.fillStyle = '#65e8ff'
@@ -64,7 +76,7 @@ module.exports = () => {
       if (boss) {
         const barWidth = Math.min(420, width - 40)
         buffer.fillStyle = '#ff9dd8'
-        buffer.fillText('HIVE QUEEN / PHASE ' + boss.getPhase(), width / 2, 88)
+        buffer.fillText(boss.getName() + ' / PHASE ' + boss.getPhase(), width / 2, 88)
         buffer.fillStyle = '#382439'
         buffer.fillRect((width - barWidth) / 2, 98, barWidth, 10)
         buffer.fillStyle = '#ff9dd8'
@@ -84,16 +96,18 @@ module.exports = () => {
         buffer.fillText(announcement, width / 2, height * 0.32, width - 40)
         buffer.restore()
       }
-      if (ship.isDestroyed() || (complete && enemies.all().length === 0)) {
+      if (transitioning || ship.isDestroyed() || (complete && enemies.all().length === 0)) {
         buffer.fillStyle = 'rgba(8, 15, 32, 0.8)'
         buffer.fillRect(0, 0, width, height)
         buffer.fillStyle = ship.isDestroyed() ? '#ff9266' : '#65e8ff'
         buffer.font = '32px Orbitron, monospace'
-        buffer.fillText(ship.isDestroyed() ? 'SHIP DESTROYED' : 'SECTOR CLEARED',
+        buffer.fillText(ship.isDestroyed() ? 'SHIP DESTROYED' : transitioning ? 'ROUND 1 CLEARED' : 'SECTORS CLEARED',
           width / 2, height / 2 - 25, width - 30)
         buffer.font = '16px Orbitron, monospace'
         buffer.fillStyle = '#ffffff'
-        buffer.fillText('SCORE ' + score + '  |  PRESS R TO RESTART', width / 2, height / 2 + 20, width - 30)
+        buffer.fillText(transitioning && !ship.isDestroyed()
+          ? 'ROUND 2 INCOMING - HEALTH AND UPGRADES RETAINED'
+          : 'SCORE ' + score + '  |  PRESS R TO RESTART', width / 2, height / 2 + 20, width - 30)
       }
       buffer.restore()
     }

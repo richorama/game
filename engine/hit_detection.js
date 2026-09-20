@@ -4,6 +4,8 @@ module.exports.detect = (layer1, layer2) => {
     const extent1 = l1sprite.getExtent()
     layer2.all().forEach(l2sprite => {
       if (l1sprite.destroyed || l2sprite.destroyed) return
+      if (l1sprite.canHit && !l1sprite.canHit(l2sprite)) return
+      if (l2sprite.canHit && !l2sprite.canHit(l1sprite)) return
       const extent2 = l2sprite.getExtent()
       if (overlap(extent1, extent2)) {
         l1sprite.hit(l2sprite)

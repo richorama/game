@@ -17,9 +17,18 @@ module.exports = props => {
   const gravity = GravityMotion()
   let driftX = 0
   let driftY = 0
+  let pathX = x
+  let pathY = y
 
   const instance = {
     accelerate: gravity.accelerate,
+    teleport: position => {
+      x = position[0]
+      y = position[1]
+      driftX = x - pathX
+      driftY = y - pathY
+      gravity.reset()
+    },
     getPosition: () => [x, y],
     getExtent: () => ({ x, y, radius: 24 }),
     getDamage: () => 20,
@@ -51,9 +60,10 @@ module.exports = props => {
       driftX += pullX
       driftY += pullY
       const amplitude = Math.min(100, window.innerWidth * 0.15)
-      x = Math.max(30, Math.min(window.innerWidth - 30,
-        startX + Math.sin(age / 420 + phase) * amplitude + driftX))
-      y = startY + age * 0.07 + driftY
+      pathX = startX + Math.sin(age / 420 + phase) * amplitude
+      pathY = startY + age * 0.07
+      x = Math.max(30, Math.min(window.innerWidth - 30, pathX + driftX))
+      y = pathY + driftY
       if (y > window.innerHeight + 60) return instance.removeFromLayer()
       const buffer = ctx.buffer
       buffer.save()

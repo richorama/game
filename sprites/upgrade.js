@@ -6,11 +6,12 @@ const GravityMotion = require('../engine/gravity_motion')
 module.exports = props => {
   let { position, speed, radius, colour, upgrade } = props
   let [x, y] = position
+  let targetX = x
   let life = 0
   const gravity = GravityMotion()
 
   const calculatePosition = ctx => {
-    const target = [position[0], window.innerHeight * 0.6]
+    const target = [targetX, window.innerHeight * 0.6]
     const distance = Math.hypot(target[0] - x, target[1] - y)
     const newHeading = maths.calculateTrajectory(
       [x, y],
@@ -24,6 +25,12 @@ module.exports = props => {
 
   const instance = {
     accelerate: gravity.accelerate,
+    teleport: position => {
+      x = position[0]
+      y = position[1]
+      targetX = x
+      gravity.reset()
+    },
     hit: sprite => {
       et.fire('upgrade', upgrade), instance.removeFromLayer()
       et.fire('display_text', {

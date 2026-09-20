@@ -38,7 +38,15 @@ module.exports = props => {
 
   const instance = {
     isPlayer: true,
+    teleportVersion: 0,
     accelerate: gravity.accelerate,
+    teleport: position => {
+      x = Math.max(30, Math.min(window.innerWidth - 30, position[0]))
+      y = Math.max(30, Math.min(window.innerHeight - 30, position[1]))
+      gravity.reset()
+      invulnerability = Math.max(invulnerability, 900)
+      instance.teleportVersion++
+    },
     hit: sprite => {
       if (destroyed || invulnerability > 0 || sprite.getDamage() === 0) return
       const damage = sprite.getDamage()
@@ -87,6 +95,8 @@ module.exports = props => {
       y = window.innerHeight * 0.7
       keys = {}
       gravity.reset()
+      instance.teleportVersion = 0
+      instance.portalCooldownUntil = 0
     },
     getPosition: () => [x, y],
     getDimensions: () => [width, height],

@@ -4,7 +4,7 @@ const et = require('eventthing')
 module.exports = props => {
   const {
     rate, velocity, offset, damage, colour = '#65e8ff', radius = 6,
-    barrels = [{ angle: 0, offset }]
+    barrels = [{ angle: 0, offset }], pierce = 1, trailLength
   } = props
 
   let lastFired = 0
@@ -26,7 +26,9 @@ module.exports = props => {
             ],
             radius,
             colour,
-            damage
+            damage,
+            pierce,
+            trailLength
           })
         })
       }
