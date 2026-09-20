@@ -5,7 +5,9 @@ black/white-hole portals and two three-phase bosses.
 
 ## Play
 
-Run `python3 -m http.server 8000` from this directory and open
+**Play online: https://richorama.github.io/game/**
+
+To play locally, run `python3 -m http.server 8000` from this directory and open
 http://localhost:8000. The browser bundle is checked in, so no install is
 needed to play.
 
@@ -104,6 +106,11 @@ or `npm run build` to update
 the checked-in `index.min.js`. Run `npm test` for gameplay regression tests.
 Movement uses pixels per second; long frame gaps are capped to avoid jumps
 after switching tabs.
+
+Pushes to `master` run the tests, rebuild the browser bundle, and deploy to
+GitHub Pages through `.github/workflows/pages.yml`. The published site contains
+only `index.html`, `index.min.js`, and the `svg/` assets. Deployment can also be
+started manually from the workflow's Actions page.
 
 # TODO
 
